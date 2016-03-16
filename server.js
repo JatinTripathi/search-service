@@ -30,22 +30,25 @@ elasticClient.indices.putMapping({
         properties:{
             title:{type:String},
             shortScript:{type:String},
-            suggest:{
-                type:'completion',
-                analyzer:'simple',
-                search_analyzer: "simple",
-                payloads: true
-                
-            }
+            id:String
         }
     }
 });
 
 
+
 //====================Index Routing and Querying============//
 //====================Mapping Documents
-app.post('/map',function(req,res){
-    
+app.post('/index',function(req,res){
+    elasticClient.index({
+        index:'publishedDoc',
+        type:'document',
+        body:{
+            title:req.body.title,
+            shortScript:req.body.shortScript,
+            id:req.body._id
+            }
+    });
 });
 
 //===================Query SearchedTearms
@@ -61,7 +64,7 @@ app.get('/search*',function(req,res){
         },
     }),function(err,results){
         if(err) throw err;
-        res.render('result',{result:results.hits.hits});
+        res.render('result',{query:req.query.terms,results:results.hits.hits});
     };
 });
 
