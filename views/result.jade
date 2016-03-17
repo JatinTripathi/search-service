@@ -17,7 +17,7 @@ block content
 						form(name='search',action='/search',method='GET',role='form')
 							input.form-control(name='terms',type='text',value='#{query}',autofocus)
 							input.btn.btn-primary(name='button',type='submit',value='Search')
-	    					#results
+	    					#searchResults
 		    					- if(query && !results.length)
 		    						| No Results for <strong>#{query}</strong>
 		    					- else if(results.length)

@@ -67,7 +67,7 @@ app.get('/search',function(req,res){
             }
         },
     }).then(function(results){
-        res.render('result',{query:req.query.terms,results:results.hits.hits});
+        res.render('result',{query:req.query.terms,searchResults:results.hits.hits});
     }),function(err){
         if(err) throw err;
         
