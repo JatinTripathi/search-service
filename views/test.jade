@@ -15,15 +15,5 @@ block content
 					a(href='/editor', class='text-center new-account btn btn-primary') New Paper
 					#query
     					form(name='search',action='/search',method='GET',role='form')
-    						input.form-control(name='terms',type='text',value='#{query.query}',autofocus)
+    						input.form-control(name='terms',type='text',autofocus)
     						input.btn.btn-primary(name='button',type='submit',value='Search')
-    					#results
-	    					- if(query && !results.length)
-	    						| No Results for <strong>#{query}</strong>
-	    					- else if(results.length)
-	    						h2 Results for <strong>#{query}</strong>
-		    						each link in results
-		    							article.well
-			    							a(href='/editor/published/#{link._source.id}') #{link._source.title}
-				    						p #{link._source.shortScript}
-			
