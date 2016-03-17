@@ -12,7 +12,7 @@ var app=express();
 app.use(bodyParser.urlencoded({extended:false}));
 //==========Search Config
 var elasticClient=new elasticSearch.Client({
-    host:'search'});
+    host:'search:9200'});
 //===============View Config
 app.set('views',path.join(__dirname,'views'));
 app.set('view engine','jade');
