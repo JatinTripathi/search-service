@@ -17,7 +17,7 @@ var elasticClient=new elasticSearch.Client({
 app.set('views',path.join(__dirname,'views'));
 app.set('view engine','jade');
 //===============Logger Config
-app.use(morgan(':method :url :status :response-time ms - :res[content-length]',{'stream':logger.stream}));
+//app.use(morgan(':method :url :status :response-time ms - :res[content-length]',{'stream':logger.stream}));
 
 
 
