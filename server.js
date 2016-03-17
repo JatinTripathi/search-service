@@ -21,7 +21,11 @@ app.set('view engine','jade');
 
 
 
-//=========================Mapping=========================//
+//=========================Initiate And Map=========================//
+elasticClient.indices.create({
+    index:'publishedDoc'
+});
+
 elasticClient.indices.putMapping({
     index:'publishedDoc',
     type:'document',
@@ -54,6 +58,7 @@ app.post('/index',function(req,res){
 app.get('/search',function(req,res){
     elasticClient.search({
         index:'publishedDoc',
+        type:'document',
         body:{
             query:{
                 match:{
@@ -61,9 +66,11 @@ app.get('/search',function(req,res){
                 }
             }
         },
-    }),function(err,results){
-        if(err) throw err;
+    }).then(function(results){
         res.render('result',{query:req.query.terms,results:results.hits.hits});
+    }),function(err){
+        if(err) throw err;
+        
     };
 });
 
