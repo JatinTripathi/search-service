@@ -66,16 +66,19 @@ app.get('/search',function(req,res){
                 }
             }
         },
-    }).then(function(results){
-        res.render('result',{query:req.query.terms,searchResults:results.hits.hits});
-    }),function(err){
+    }),function(err,result){
         if(err) throw err;
+        res.render('test');
         
     };
 });
 
 app.get('/test',function(req,res){
     res.render('test');
+});
+
+app.get('/editor',function(req,res){
+    res.render('editor');
 });
 
 
