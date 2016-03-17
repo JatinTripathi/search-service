@@ -51,7 +51,7 @@ app.post('/index',function(req,res){
 });
 
 //===================Query SearchedTearms
-app.get('/search*',function(req,res){
+app.get('/search',function(req,res){
     elasticClient.search({
         index:'publishedDoc',
         body:{
