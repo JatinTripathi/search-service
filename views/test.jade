@@ -13,6 +13,6 @@ block content
 							li Last Name ---> #{user.lastName}
 					a(href='/signout', class='text-center new-account btn btn-primary') Sign Out
 					a(href='/editor', class='text-center new-account btn btn-primary') New Paper
-						form(name='search',action='/search',method='GET',role='form')
-							input.form-control(name='terms',type='text',autofocus)
-							input.btn.btn-primary(name='button',type='submit',value='Search')
+					form(name='search',action='/search',method='GET',role='form')
+						input.form-control(name='terms',type='text',autofocus)
+						input.btn.btn-primary(name='button',type='submit',value='Search')
