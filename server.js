@@ -66,11 +66,9 @@ app.get('/search',function(req,res){
                 }
             }
         },
-    }),function(err,result){
-        if(err) throw err;
-        res.render('test');
-        
-    };
+    }).then(function(result){
+        res.render('testresult');
+    }),function(err){if(err) throw err};
 });
 
 app.get('/test',function(req,res){
