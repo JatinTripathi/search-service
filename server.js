@@ -1,5 +1,5 @@
 var express=require('express');
-var logger=require('logger');
+//var logger=require('./log/logger.js');
 var morgan=require('morgan');
 var path=require('path');
 var elasticSearch=require('elasticsearch');
@@ -12,11 +12,10 @@ var app=express();
 app.use(bodyParser.urlencoded({extended:false}));
 //==========Search Config
 var elasticClient=new elasticSearch.Client({
-    host:'search',
-    log:'./log/searchlogs'});
+    host:'search'});
 //===============View Config
-app.use('views',path.join(__dirname,'views'));
-app.use('view engine','jade');
+app.set('views',path.join(__dirname,'views'));
+app.set('view engine','jade');
 //===============Logger Config
 app.use(morgan(':method :url :status :response-time ms - :res[content-length]',{'stream':logger.stream}));
 
@@ -76,5 +75,5 @@ app.get('/test',function(req,res){
 //==================Port Config==================//
 var port=process.env.port||8080;
 app.listen(port,function(){
-    logger.info('Server listening at port'+port+'!');
+    console.log('Server listening at port'+port+'!');
 });
