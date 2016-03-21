@@ -2,6 +2,10 @@ FROM node
 
 MAINTAINER JatinTripathi
 
+RUN mkdir /src
+
+WORKDIR /src
+
 COPY package.json /src/package.json
 RUN cd /src;npm install --production
 
