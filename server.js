@@ -5,7 +5,8 @@ var path=require('path');
 var elasticSearch=require('elasticsearch');
 var bodyParser=require('body-parser');
 
-
+var indexName='publisheddoc';
+var typeName='documents';
 
 //==============Express Config==================//
 var app=express();
@@ -37,17 +38,17 @@ elasticClient.ping({
 
 //=========================Initiate And Map=========================//
 elasticClient.indices.create({
-    index:'publishedoc'
+    index:indexName
 }).then(function(result){
     console.log(result)
 });
 
 elasticClient.indices.putMapping({
-    index:'publisheddoc',
-    type:'document',
+    index:indexName,
+    type:typeName,
     body:{
         properties:{
-            title:{type:String},
+            head:{type:String},
             shortScript:{type:String},
             suggest: {
                     type: "completion",
@@ -65,14 +66,14 @@ elasticClient.indices.putMapping({
 //====================Indexing Documents
 app.post('/index',function(req,res){
     elasticClient.index({
-        index:'publisheddoc',
-        type:'document',
+        index:indexName,
+        type:typeName,
         body:{
-            title:req.body.head,
+            head:req.body.head,
             shortScript:req.body.shortScript,
             suggest: {
                 input: req.body.head.split(" "),
-                output: req.body.title,
+                output: req.body.head,
                 payload: req.metadata || {}
             }
         }
@@ -85,8 +86,8 @@ app.post('/index',function(req,res){
 //===================Query Suggestion
 app.get('/suggest/:term',function(req,res,next){
     elasticClient.suggest({
-        index:'publishedDoc',
-        type:'document',
+        index:indexName,
+        type:typeName,
         body:{
             docsuggest:{
                 text:req.params.term,
@@ -105,8 +106,8 @@ app.get('/suggest/:term',function(req,res,next){
 //===================Query SearchedTearms
 app.get('/search/:term',function(req,res){
     elasticClient.search({
-        index:'publishedDoc',
-        type:'document',
+        index:indexName,
+        type:typeName,
         body:{
             query:{
                 match:{
