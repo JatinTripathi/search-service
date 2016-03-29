@@ -33,15 +33,19 @@ elasticClient.indices.putMapping({
         properties:{
             title:{type:String},
             shortScript:{type:String},
-            id:String
+            id:String,
+            suggest: {
+                    type: "completion",
+                    analyzer: "simple",
+                    search_analyzer: "simple",
+                    payloads: true
+                }
         }
     }
 });
 
-
-
-//====================Index Routing and Querying============//
-//====================Mapping Documents
+//====================Index Routing Querying and Suggestion============//
+//====================Indexing Documents
 app.post('/index',function(req,res){
     elasticClient.index({
         index:'publishedDoc',
@@ -49,8 +53,33 @@ app.post('/index',function(req,res){
         body:{
             title:req.body.title,
             shortScript:req.body.shortScript,
-            id:req.body._id
+            suggest: {
+                input: req.title.split(" "),
+                output: req.title,
+                payload: req.metadata || {}
             }
+        }
+    });
+});
+
+
+//===================Query Suggestion
+app.get('/suggest',function(req,res,next){
+    elasticClient.suggest({
+        index:'publishedDoc',
+        type:'document',
+        body:{
+            docsuggest:{
+                text:req.query,
+                completion:{
+                    field:'suggest',
+                    fuzzy:true
+                }
+            }
+        }
+    }).then(function(result){
+        res.json(result);
+        
     });
 });
 
@@ -66,13 +95,11 @@ app.get('/search',function(req,res){
                 }
             }
         },
-    }).then(function(result){
-        res.render('testresult');
-    }),function(err){if(err) throw err};
-});
-
-app.get('/test',function(req,res){
-    res.render('test');
+    }).then(function(err,result){
+        if(err) throw err;
+        res.json(result);
+        
+    });
 });
 
 app.get('/editor',function(req,res){
