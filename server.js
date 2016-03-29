@@ -37,11 +37,13 @@ elasticClient.ping({
 
 //=========================Initiate And Map=========================//
 elasticClient.indices.create({
-    index:'publishedDoc'
+    index:'publishedoc'
+}).then(function(result){
+    console.log(result)
 });
 
 elasticClient.indices.putMapping({
-    index:'publishedDoc',
+    index:'publisheddoc',
     type:'document',
     body:{
         properties:{
@@ -55,13 +57,15 @@ elasticClient.indices.putMapping({
                 }
         }
     }
+}).then(function(result){
+    console.log(result)
 });
 
 //====================Index Routing Querying and Suggestion============//
 //====================Indexing Documents
 app.post('/index',function(req,res){
     elasticClient.index({
-        index:'publishedDoc',
+        index:'publisheddoc',
         type:'document',
         body:{
             title:req.body.head,
@@ -110,8 +114,7 @@ app.get('/search/:term',function(req,res){
                 }
             }
         },
-    }).then(function(err,result){
-        if(err) throw err;
+    }).then(function(result){
         res.json(result);
         
     });
