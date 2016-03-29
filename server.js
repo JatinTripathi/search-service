@@ -33,7 +33,6 @@ elasticClient.indices.putMapping({
         properties:{
             title:{type:String},
             shortScript:{type:String},
-            id:String,
             suggest: {
                     type: "completion",
                     analyzer: "simple",
