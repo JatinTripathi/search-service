@@ -20,6 +20,20 @@ app.set('view engine','jade');
 //app.use(morgan(':method :url :status :response-time ms - :res[content-length]',{'stream':logger.stream}));
 
 
+//====================Elasticsearch Connection Test=======//
+elasticClient.ping({
+  // ping usually has a 3000ms timeout
+  requestTimeout: Infinity,
+
+  // undocumented params are appended to the query string
+  hello: "elasticsearch!"
+}, function (error) {
+  if (error) {
+    console.trace('elasticsearch cluster is down!');
+  } else {
+    console.log('All is well');
+  }
+});
 
 //=========================Initiate And Map=========================//
 elasticClient.indices.create({
@@ -33,6 +47,7 @@ elasticClient.indices.putMapping({
         properties:{
             title:{type:String},
             shortScript:{type:String},
+            id:String,
             suggest: {
                     type: "completion",
                     analyzer: "simple",
@@ -50,10 +65,10 @@ app.post('/index',function(req,res){
         index:'publishedDoc',
         type:'document',
         body:{
-            title:req.body.title,
+            title:req.body.head,
             shortScript:req.body.shortScript,
             suggest: {
-                input: req.body.title.split(" "),
+                input: req.body.head.split(" "),
                 output: req.body.title,
                 payload: req.metadata || {}
             }
@@ -65,13 +80,13 @@ app.post('/index',function(req,res){
 
 
 //===================Query Suggestion
-app.get('/suggest',function(req,res,next){
+app.get('/suggest/:term',function(req,res,next){
     elasticClient.suggest({
         index:'publishedDoc',
         type:'document',
         body:{
             docsuggest:{
-                text:req.query,
+                text:req.params.term,
                 completion:{
                     field:'suggest',
                     fuzzy:true
@@ -85,14 +100,14 @@ app.get('/suggest',function(req,res,next){
 });
 
 //===================Query SearchedTearms
-app.get('/search',function(req,res){
+app.get('/search/:term',function(req,res){
     elasticClient.search({
         index:'publishedDoc',
         type:'document',
         body:{
             query:{
                 match:{
-                    body:req.query.terms
+                    body:req.params.term
                 }
             }
         },
