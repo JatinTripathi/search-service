@@ -54,11 +54,13 @@ app.post('/index',function(req,res){
             title:req.body.title,
             shortScript:req.body.shortScript,
             suggest: {
-                input: req.title.split(" "),
-                output: req.title,
+                input: req.body.title.split(" "),
+                output: req.body.title,
                 payload: req.metadata || {}
             }
         }
+    }).then(function(result){
+        res.json(result);
     });
 });
 
