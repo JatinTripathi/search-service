@@ -48,8 +48,8 @@ elasticClient.indices.putMapping({
     type:typeName,
     body:{
         properties:{
-            head:{type:String},
-            shortScript:{type:String},
+            head:{type:"string"},
+            shortscript:{type:"string"},
             suggest: {
                     type: "completion",
                     analyzer: "simple",
@@ -70,7 +70,7 @@ app.post('/index',function(req,res){
         type:typeName,
         body:{
             head:req.body.head,
-            shortScript:req.body.shortScript,
+            shortscript:req.body.shortScript,
             suggest: {
                 input: req.body.head.split(" "),
                 output: req.body.head,
