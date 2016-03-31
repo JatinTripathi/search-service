@@ -5,6 +5,7 @@ This Microservice will use native Elasticsearch client for Node.js which makes i
 * Mapping
 * Indexing
 * Searching
+* Suggestions
 
 Everytime appication is restarted Initiation and Mapping gets performed, Indexing and Searching are done on API call.
 
