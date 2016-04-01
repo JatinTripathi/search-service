@@ -72,17 +72,17 @@ function initMapping() {
 }
 exports.initMapping = initMapping;
 
-function addDocument(document) {
+function addDocument(page) {
     return elasticClient.index({
         index: indexName,
         type: "document",
         body: {
-            title: document.title,
-            content: document.shortscript,
+            title: page.title,
+            content: page.shortscript,
             suggest: {
-                input: document.title.split(" "),
-                output: document.title,
-                payload: document.metadata || {}
+                input: page.title.split(" "),
+                output: page.title,
+                payload: page.metadata || {}
             }
         }
     });
