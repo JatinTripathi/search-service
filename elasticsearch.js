@@ -102,6 +102,22 @@ function getSuggestions(input) {
                 }
             }
         }
-    })
+    });
 }
 exports.getSuggestions = getSuggestions;
+
+function getSearch(input){
+    return elasticClient.search({
+        index: indexName,
+        type: "document",
+        body: {
+            query: {
+                match: {
+                    body: input
+                }
+            }
+        }
+    });
+}
+
+exports.getSearch = getSearch;
