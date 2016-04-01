@@ -41,7 +41,12 @@ app.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
-
+/* GET Search Result. */
+app.get('/search/:terms',function(req,res,next){
+  elastic.getSearch(req.params.terms).then(function(result){
+    res.json(result);
+  });
+});
 
 
 // catch 404 and forward to error handler
