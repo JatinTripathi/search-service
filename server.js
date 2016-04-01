@@ -26,6 +26,11 @@ app.get('/editor',function(req,res){
   res.render('editor');
 });
 
+/* GET home page. */
+app.get('/', function(req, res, next) {
+  res.render('index', { title: 'Express' });
+});
+
 /* GET suggestions */
 app.get('/suggest/:input', function (req, res, next) {
   elastic.getSuggestions(req.params.input).then(function (result) { res.json(result) });
@@ -36,10 +41,6 @@ app.post('/index', function (req, res, next) {
   elastic.addDocument(req.body).then(function (result) { res.json(result) });
 });
 
-/* GET home page. */
-app.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
 
 /* GET Search Result. */
 app.get('/search/:terms',function(req,res,next){
