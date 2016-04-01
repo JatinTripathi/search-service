@@ -13,4 +13,4 @@ ADD . /src
 
 EXPOSE 8080
 
-CMD ["nodemon","/src/server.js"]
+CMD ["npm","start"]
