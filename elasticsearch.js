@@ -113,7 +113,7 @@ function getSearch(input){
         body: {
             query: {
                 match: {
-                    body: input
+                    title: input
                 }
             }
         }
